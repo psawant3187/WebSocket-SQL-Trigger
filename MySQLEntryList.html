@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL WebSocket Alerts</title>
+    <style>
+        /* Basic styling for clarity */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #entries-list {
+            margin: 20px 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        #entries-list li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #query-log {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Last 10 Entries</h1>
+    <ul id="entries-list"></ul>
+    <div id="query-log"></div> <!-- Added to display executed queries -->
+
+    <script>
+        // Establish a WebSocket connection to the server
+        const ws = new WebSocket('ws://localhost:9870');
+
+        ws.onopen = function() {
+            console.log("Connected to WebSocket server.");
+        };
+
+        ws.onmessage = function(event) {
+            const message = event.data;
+            const parsedMessage = JSON.parse(message);
+            const dataType = parsedMessage.type; // Get the type of the data (INSERT, UPDATE, DELETE, LAST_10)
+            const data = parsedMessage.data; // The actual data content
+            const query = parsedMessage.query || ''; // Get the query if present
+            const timestamp = parsedMessage.timestamp || ''; // Get the timestamp if present
+
+            const list = document.getElementById('entries-list');
+            const queryLog = document.getElementById('query-log'); // Get the query log element
+
+            // Handle the different types of messages
+            if (dataType === 'LAST_10') {
+                // Clear the list and populate with the last 10 entries
+                list.innerHTML = '';
+                data.forEach(entry => {
+                    const entryTimestamp = entry.created_at ? new Date(entry.created_at).toLocaleString() : 'No timestamp';
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `Timestamp: ${entryTimestamp}, SrNo: ${entry.SrNo}, ID: ${entry.ID}, Name: ${entry.Name}, Symptoms: ${entry.Symptoms}`;
+                    list.prepend(listItem);
+                });
+            } else if (dataType === 'INSERT') {
+                // Handle new entry insert
+                const entryTimestamp = data.created_at ? new Date(data.created_at).toLocaleString() : 'No timestamp';
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `Timestamp: ${entryTimestamp}, SrNo: ${data.SrNo}, ID: ${data.ID}, Name: ${data.Name}, Symptoms: ${data.Symptoms}`;
+                list.prepend(listItem);
+
+                // Show alert for new entry
+                console.log('Alert for new entry added:', data); // Debug log to ensure this line runs
+                alert(`New entry added: \nTimestamp: ${entryTimestamp}, SrNo: ${data.SrNo}, ID: ${data.ID}, Name: ${data.Name}, Symptoms: ${data.Symptoms}`);
+
+                // Display the insert query
+                queryLog.innerHTML = `<p>Insert Query Executed: ${query} <br> Operation: Insert <br> Timestamp: ${entryTimestamp} <br> SrNo: ${data.SrNo}, ID: ${data.ID}, Name: ${data.Name}, Symptoms: ${data.Symptoms}</p>` + queryLog.innerHTML;
+            } else if (dataType === 'UPDATE') {
+                // Handle entry update
+                const oldTimestamp = data.old.created_at ? new Date(data.old.created_at).toLocaleString() : 'No timestamp';
+                const newTimestamp = data.new.created_at ? new Date(data.new.created_at).toLocaleString() : 'No timestamp';
+
+                console.log('Alert for entry updated:', data); // Debug log to ensure this line runs
+                alert(`Entry updated: \nOld - Timestamp: ${oldTimestamp}, SrNo: ${data.old.SrNo}, ID: ${data.old.ID}, Name: ${data.old.Name}, Symptoms: ${data.old.Symptoms}\nNew - Timestamp: ${newTimestamp}, SrNo: ${data.new.SrNo}, ID: ${data.new.ID}, Name: ${data.new.Name}, Symptoms: ${data.new.Symptoms}`);
+
+                // Update the entry in the list
+                const existingItem = Array.from(list.children).find(item => item.innerHTML.includes(`SrNo: ${data.old.SrNo}`));
+                if (existingItem) {
+                    existingItem.innerHTML = `Timestamp: ${newTimestamp}, SrNo: ${data.new.SrNo}, ID: ${data.new.ID}, Name: ${data.new.Name}, Symptoms: ${data.new.Symptoms}`;
+                } else {
+                    // Add new item if it doesn't exist
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `Timestamp: ${newTimestamp}, SrNo: ${data.new.SrNo}, ID: ${data.new.ID}, Name: ${data.new.Name}, Symptoms: ${data.new.Symptoms}`;
+                    list.prepend(listItem);
+                }
+
+                // Display the update query with details
+                queryLog.innerHTML = `<p>Update Query Executed: ${query} <br> Operation: Update <br> Timestamp: ${newTimestamp} <br> Old Data - SrNo: ${data.old.SrNo}, ID: ${data.old.ID}, Name: ${data.old.Name}, Symptoms: ${data.old.Symptoms} <br> New Data - SrNo: ${data.new.SrNo}, ID: ${data.new.ID}, Name: ${data.new.Name}, Symptoms: ${data.new.Symptoms}</p>` + queryLog.innerHTML;
+            } else if (dataType === 'DELETE') {
+                // Handle entry deletion
+                const entryTimestamp = data.created_at ? new Date(data.created_at).toLocaleString() : 'No timestamp';
+                console.log('Alert for entry deleted:', data); // Debug log to ensure this line runs
+                alert(`Entry deleted: \nTimestamp: ${entryTimestamp}, SrNo: ${data.SrNo}, ID: ${data.ID}, Name: ${data.Name}, Symptoms: ${data.Symptoms}`);
+                
+                // Remove the entry from the list
+                const existingItem = Array.from(list.children).find(item => item.innerHTML.includes(`SrNo: ${data.SrNo}`));
+                if (existingItem) {
+                    list.removeChild(existingItem);
+                }
+
+                // Display the delete query with details
+                queryLog.innerHTML = `<p>Delete Query Executed: ${query} <br> Operation: Delete <br> Timestamp: ${entryTimestamp} <br> SrNo: ${data.SrNo}, ID: ${data.ID}, Name: ${data.Name}, Symptoms: ${data.Symptoms}</p>` + queryLog.innerHTML;
+            }
+        };
+
+        ws.onclose = function() {
+            console.log("Disconnected from WebSocket server.");
+        };
+
+        ws.onerror = function(error) {
+            console.log("WebSocket error: ", error);
+        };
+    </script>
+</body>
+</html>
