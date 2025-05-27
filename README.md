@@ -1,73 +1,109 @@
-<h1 align="center">
-  🚀 WebSocket SQL Trigger
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Real-Time Alert System</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      background: #fdfdfd;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #0066cc;
+    }
+    .badge-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .badge-container img {
+      margin: 0 5px;
+    }
+    .gif-center {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    table, th, td {
+      border: 1px solid #bbb;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
 
-<p align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTU5Z3NpMW1kbXJ2cWZrOXA1a2lsZHZjM3VoYXkzZDl5cHVjMXR5OCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/HhTXt43pk1I1W/giphy.gif" width="120" height="120" />
-</p>
+<h1>🚀 Real-Time Alert System with WebSockets & MySQL</h1>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.7+-blue?logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/MySQL-Server-005C84?logo=mysql&logoColor=white" />
-  <img src="https://img.shields.io/badge/WebSocket-Enabled-green?logo=websocket&logoColor=white" />
-</p>
+<div class="gif-center">
+  <img src="https://media.giphy.com/media/HhTXt43pk1I1W/giphy.gif" alt="Alert" width="100">
+</div>
 
----
+<div class="badge-container">
+  <img src="https://img.shields.io/badge/Python-3.7+-blue?logo=python" />
+  <img src="https://img.shields.io/badge/MySQL-Server-005C84?logo=mysql" />
+  <img src="https://img.shields.io/badge/WebSocket-Enabled-green" />
+</div>
 
-## 📦 Requirements
+<h2>📦 Requirements</h2>
+<ul>
+  <li>Python 3.7+</li>
+  <li>MySQL Server</li>
+</ul>
 
-- Python `3.7+`
-- MySQL Server
+<h2>🐍 Python Libraries</h2>
+<p>The following libraries are required:</p>
+<table>
+  <tr><th>Library</th><th>Purpose</th></tr>
+  <tr><td>asyncio</td><td>For asynchronous operations</td></tr>
+  <tr><td>websockets</td><td>WebSocket server functionality</td></tr>
+  <tr><td>pymysql</td><td>MySQL database interaction</td></tr>
+  <tr><td>json</td><td>JSON data encoding/decoding</td></tr>
+  <tr><td>datetime</td><td>Datetime handling and formatting</td></tr>
+</table>
 
-## 🐍 Python Libraries
+<h3>📥 Install dependencies:</h3>
+<pre><code>pip install -r requirements.txt</code></pre>
 
-The following libraries are needed:
+<h2>⚙️ Setup Instructions</h2>
+<ol>
+  <li>Install MySQL Server on your system.</li>
+  <li>Create a new database and a user with appropriate permissions.</li>
+  <li>Run the script using Python:
+    <pre><code>python API.py</code></pre>
+  </li>
+  <li>Open the HTML file with Live Server in your browser.</li>
+  <li>Add an entry to the database — watch alerts update in real time!</li>
+</ol>
 
-| Library      | Purpose                              |
-|--------------|--------------------------------------|
-| `asyncio`    | For asynchronous operations          |
-| `websockets` | WebSocket server communication       |
-| `pymysql`    | Connect and query MySQL databases    |
-| `json`       | Encode/decode data in JSON format    |
-| `datetime`   | Handle and format time data          |
+<div class="gif-center">
+  <img src="https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif" alt="Live Demo" width="600">
+</div>
 
-📥 Install all dependencies:
-```bash
-pip install -r requirements.txt
+<h2>🧠 Highlights</h2>
+<ul>
+  <li>💡 Real-time alerts without page refresh</li>
+  <li>🔐 Secure DB connection with PyMySQL</li>
+  <li>📦 Modular design for easy expansion</li>
+</ul>
 
-⚙️ Setup Instructions
-Follow these steps to get up and running in minutes!
+<h2>📬 Feedback & Contributions</h2>
+<p>Have ideas or improvements? Fork this repo or open an issue!</p>
 
-🛠 Install MySQL Server on your system.
-
-🗃 Create a database and a new user with proper privileges.
-
-▶️ Run the backend:
-
-![image](https://github.com/user-attachments/assets/14845855-da1d-4346-87d2-ee23af18eee6)
-
-🌐 Open the HTML file using Live Server in your browser.
-
-🧪 Make a new entry in your database to trigger real-time alert updates on your HTML page!
-
-✅ That's it! Real-time alerts should now appear instantly when database changes happen!
-
-📸 Demo Preview
-<p align="center"> <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzhraHNzZXF5b3pudTR4eDNlZDV3a2p4dWZudWlsb3djOG95bndpcSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l3q2K5jinAlChoCLS/giphy.gif" width="600" /> </p>
-🧠 Project Highlights
-💡 Real-time Data: WebSockets push alerts instantly without refresh.
-
-🔐 Secure DB Interaction: Using pymysql for secure database access.
-
-🧩 Modular Python Script: Easy to scale or integrate.
-
-📬 Feedback & Contributions
-Have ideas? Found a bug? Feel free to open an issue or PR!
-Made with ❤️ using Python and WebSockets.
-
-### 💡 Tips:
-- You can replace the demo GIFs with your own (hosted on Giphy/Imgur or in your repo).
-- For advanced animation, you could embed a short WebSocket live demo using GIF screen recordings.
-- If you deploy the HTML somewhere, you can also embed a live link.
-
-Want me to generate custom badges, icons, or a `requirements.txt` example for this?
+</body>
+</html>
