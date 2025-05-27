@@ -1,4 +1,4 @@
-  🚀 Real-Time Alert System with WebSockets & MySQL
+  🚀 WebSocket-SQL-Trigger
 
   ![Python](https://img.shields.io/badge/Python-3.7+-blue?logo=python)
   ![MySQL](https://img.shields.io/badge/MySQL-Server-005C84?logo=mysql)
