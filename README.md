@@ -26,27 +26,26 @@ readme: |
 
   ```bash
   pip install -r requirements.txt
+  ⚙️ Setup Instructions
+  Install MySQL Server on your system.
 
-⚙️ Setup Instructions
-Install MySQL Server on your system.
+  Create a new database and user with the necessary permissions.
 
-Create a new database and user with the necessary permissions.
+  Run the backend:
+  python API.py
 
-Run the backend:
-python API.py
+  Open the HTML file with Live Server.
 
-Open the HTML file with Live Server.
+  Add a record in the database and see real-time alerts appear in your browser!
 
-Add a record in the database and see real-time alerts appear in your browser!
+  🧠 Highlights
+  💡 Real-time alerts without page refresh.
 
-🧠 Highlights
-💡 Real-time alerts without page refresh.
+  🔐 Secure database interaction via PyMySQL.
 
-🔐 Secure database interaction via PyMySQL.
+  📦 Modular, scalable codebase.
 
-📦 Modular, scalable codebase.
+  📬 Feedback & Contributions
+  Found a bug or have a feature idea? Open an issue or a pull request!
 
-📬 Feedback & Contributions
-Found a bug or have a feature idea? Open an issue or a pull request!
-
-Would you like a script that **extracts the YAML value** and writes it to `README.md` automatically?
+  Would you like a script that **extracts the YAML value** and writes it to `README.md` automatically?
